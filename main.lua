@@ -114,13 +114,11 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                     local bagAmount = tonumber(bagSplit[1])
                     local bagMax = tonumber(bagSplit[2])
                     if bagAmount == bagMax then
-                        tweenService:Create(rootPart, tweenInfo, {CFrame = sellingPoint.PrimaryPart.CFrame}):Play() --If we've reached the maximum bag capacity then we can sell the jewels
+                        --tweenService:Create(rootPart, tweenInfo, {CFrame = sellingPoint.PrimaryPart.CFrame}):Play() --If we've reached the maximum bag capacity then we can sell the jewels
                         task.wait(.5)
                         task.wait(.5)
                         fireclickdetector(sellingPoint.ClickDetector)
-                        serverHop()
-                    elseif parentGlass.Position == Vector3.new(627.768, 2.52863, -188.403) then
-                        serverHop()
+                        --serverHop()
                     else --If we haven't reached the maximum capacity then continue stealing
                         tweenService:Create(rootPart, tweenInfo, {CFrame = v.CFrame}):Play()
                         task.wait(.5)
@@ -131,11 +129,11 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
         end
     end
 
-    tweenService:Create(rootPart, tweenInfo, {CFrame = sellingPoint.PrimaryPart.CFrame}):Play() --Regardless of if we've not got the maximum jewels, teleport and sell to stop the player getting stuck
+    --tweenService:Create(rootPart, tweenInfo, {CFrame = sellingPoint.PrimaryPart.CFrame}):Play() --Regardless of if we've not got the maximum jewels, teleport and sell to stop the player getting stuck
     task.wait(.5)
     task.wait(.5)
     fireclickdetector(sellingPoint.ClickDetector)
-    serverHop()
+    --serverHop()
 
 else --If the store isn't being robbed
     serverHop()

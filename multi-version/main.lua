@@ -9,6 +9,7 @@ local players = game:GetService("Players")
 local tweenService = game:GetService("TweenService")
 local teleportService = game:GetService("TeleportService")
 local httpService = game:GetService("HttpService")
+local replicatedStorage = game:GetService("ReplicatedStorage")
 
 --// Player
 local player = players.LocalPlayer
@@ -26,6 +27,9 @@ local dealer = map.NPCs.BankDealerNPC
 local jewelryStore = map.Buildings.Jewelry
 local alarm = jewelryStore.Rob["alarm_box"]
 local sellingPoint = map.Buildings.Bank.Rob.Sell
+
+--// Remotes
+local purchase = replicatedStorage._network.purchase
 
 --// Tweening
 local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear)
@@ -86,47 +90,29 @@ humanoid.Died:Connect(function() --If the player dies then teleport, this is nee
     serverHop()
 end)
 
-humanoid.Seated:Connect(function() --Stops the player getting stuck in seat while teleporting
-    humanoid.Sit = false
-end)
-
-local function NoclipLoop()
-    for _, child in pairs(character:GetDescendants()) do
-        if child:IsA("BasePart") and child.CanCollide == true then
-            child.CanCollide = false
-        end
-    end
-end
-Noclipping = game:GetService('RunService').Stepped:Connect(NoclipLoop)
-
-local function clickButton(path) --Fire button events
-    local events = {"MouseButton1Click", "MouseButton1Down", "Activated"}
-    for _,v in pairs(events) do
-        for _,v in pairs(getconnections(path[v])) do
-            v:Fire()
-        end
-    end 
-end
-
 if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being robbed, we want this to be happening so no money has to be spent on a gun
     print(player.Name .. " Started farming with " .. tostring(cash))
-    task.wait(2)
     if playerGui:FindFirstChild("Intro") then
         local playButton = playerGui.Intro.container.buttons.play.hitbox
-        clickButton(playButton)
+        local events = {"MouseButton1Click", "MouseButton1Down", "Activated"}
+        for _,v in pairs(events) do
+            for _,v in pairs(getconnections(playButton[v])) do
+                v:Fire()
+            end
+        end 
         camera.CameraType = Enum.CameraType.Custom
     elseif game:IsLoaded() and player.Character then end
 
     tweenService:Create(rootPart, tweenInfo, {CFrame = dealer.HumanoidRootPart.CFrame}):Play() --Teleport to the dealer
-    task.wait(1.8)
+    task.wait(2)
     fireproximityprompt(dealer.HumanoidRootPart.PromptAttachment.ProximityPrompt) --Opens the shop gui
-    local purchaseBag = playerGui:WaitForChild("Shop").Shop.list["Duffel Bag (x5 Capacity)"]["purchase_button"] --Find the button to purchase the duffle bag
-    clickButton(purchaseBag)
+    task.wait(.5)
+    purchase:InvokeServer("bank_dealer", "Duffel Bag")
     
     task.wait(.5)
-    bagSplit = string.split(character:WaitForChild("Duffel Bag").Handle.AmountDisplay.container["jewelry_container"].amount.Text, "/")
-    bagAmount = tonumber(bagSplit[1])
-    bagMax = tonumber(bagSplit[2])
+    local bagSplit = string.split(character:WaitForChild("Duffel Bag").Handle.AmountDisplay.container["jewelry_container"].amount.Text, "/")
+    local bagAmount = tonumber(bagSplit[1])
+    local bagMax = tonumber(bagSplit[2])
 
     for _,v in next, jewelryStore.Rob.stealable:GetDescendants() do
         if v:IsA("Part") then
@@ -145,13 +131,12 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                             print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
                         end)
                         fireclickdetector(sellingPoint.ClickDetector)
-                        task.wait(3)
                         print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
                         task.wait(1.5)
                         serverHop()
                     else --If we haven't reached the maximum capacity then continue stealing
                         task.wait(.5)
-                        if parentGlass.Position == Vector3.new(616.0256958007812, 2.5286293029785156, -188.40292358398438) then
+                        if parentGlass.CFrame.X == 616 then
                             tweenService:Create(rootPart, tweenInfo, {CFrame = sellingPoint.PrimaryPart.CFrame}):Play()
                             task.wait(1)
                             task.wait(1)
@@ -160,7 +145,6 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                             serverHop()
                         end
                         tweenService:Create(rootPart, tweenInfo, {CFrame = v.CFrame}):Play()
-                        task.wait(.5)
                         fireclickdetector(v.Parent.ClickDetector)
                     end
                 end
@@ -175,7 +159,6 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
         print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
     end)
     fireclickdetector(sellingPoint.ClickDetector)
-    task.wait(1.5)
     print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
     task.wait(1.5)
     serverHop()

@@ -1,9 +1,14 @@
+--// Init
+if not isfile('farm.lua') then
+    writefile('farm.lua', game:HttpGet("https://raw.githubusercontent.com/jasonsworks/cr-autofarm/master/multi-version/main.lua"))
+    print("written")
+end
+
 --// Services
 local players = game:GetService("Players")
 local tweenService = game:GetService("TweenService")
 local teleportService = game:GetService("TeleportService")
 local httpService = game:GetService("HttpService")
-local runService = game:GetService("RunService")
 
 --// Player
 local player = players.LocalPlayer
@@ -31,7 +36,7 @@ player.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
         queueonteleport([[
             repeat wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.PlayerGui:WaitForChild("Main")
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/jasonsworks/cr-autofarm/master/multi-version/main.lua'))()
+            loadfile('farm.lua')
         ]])
     end
  end)

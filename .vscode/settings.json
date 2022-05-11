@@ -1,0 +1,12 @@
+{
+    "robloxLsp.diagnostics.globals": [
+        "syn",
+        "queue_on_teleport",
+        "isfile",
+        "writefile",
+        "readfile",
+        "fireproximityprompt",
+        "fireclickdetector",
+        "getconnections"
+    ]
+}

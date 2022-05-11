@@ -30,7 +30,7 @@ queueonteleport = syn.queue_on_teleport or queue_on_teleport
 player.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
         queueonteleport([[
-            repeat wait() until game.Players.LocalPlayer.PlayerGui.Main
+            repeat wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.PlayerGui.Main
             loadstring(game:HttpGet('https://raw.githubusercontent.com/jasonsworks/cr-autofarm/master/multi-version/main.lua'))()
         ]])
     end

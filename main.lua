@@ -119,6 +119,8 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                         task.wait(.5)
                         fireclickdetector(sellingPoint.ClickDetector)
                         serverHop()
+                    elseif parentGlass.Position == Vector3.new(627.768, 2.52863, -188.403) then
+                        serverHop()
                     else --If we haven't reached the maximum capacity then continue stealing
                         tweenService:Create(rootPart, tweenInfo, {CFrame = v.CFrame}):Play()
                         task.wait(.5)

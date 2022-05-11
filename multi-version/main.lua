@@ -82,13 +82,22 @@ local function serverHop()
 end
 
 humanoid.Died:Connect(function() --If the player dies then teleport, this is needed because with noclip being enabled the player can fall under the map and be kicked
-    print(player.Name .. " Was killed! Changing server..")
+    print(player.Name .. " was killed! Changing server..")
     serverHop()
 end)
 
 humanoid.Seated:Connect(function() --Stops the player getting stuck in seat while teleporting
     humanoid.Sit = false
 end)
+
+local function NoclipLoop()
+    for _, child in pairs(character:GetDescendants()) do
+        if child:IsA("BasePart") and child.CanCollide == true then
+            child.CanCollide = false
+        end
+    end
+end
+Noclipping = game:GetService('RunService').Stepped:Connect(NoclipLoop)
 
 local function clickButton(path) --Fire button events
     local events = {"MouseButton1Click", "MouseButton1Down", "Activated"}
@@ -139,6 +148,9 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                         task.wait(3)
                         print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
                         task.wait(1.5)
+                        serverHop()
+                    elseif parentGlass.Position == Vector3.new(627.768, 2.52863, -188.403) then
+                        print(player.Name .. " stuck on jewelry, changing server..")
                         serverHop()
                     else --If we haven't reached the maximum capacity then continue stealing
                         tweenService:Create(rootPart, tweenInfo, {CFrame = v.CFrame}):Play()

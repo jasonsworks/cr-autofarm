@@ -65,7 +65,7 @@ local function joinNew()
 end
 
 --// Script
-print(player.Name .. " Starting farming with " .. tostring(cash))
+print(player.Name .. " Started farming with " .. tostring(cash))
 local server = joinNew()
 local function serverHop()
     if not server then 
@@ -96,6 +96,7 @@ local function clickButton(path) --Fire button events
 end
 
 if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being robbed, we want this to be happening so no money has to be spent on a gun
+    task.wait(2)
     if playerGui:FindFirstChild("Intro") then
         local playButton = playerGui.Intro.container.buttons.play.hitbox
         clickButton(playButton)
@@ -124,15 +125,15 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                     bagMax = tonumber(bagSplit[2])
                     if bagAmount == bagMax then
                         tweenService:Create(rootPart, tweenInfo, {CFrame = sellingPoint.PrimaryPart.CFrame}):Play() --If we've reached the maximum bag capacity then we can sell the jewels
-                        task.wait(.5)
-                        task.wait(.5)
+                        task.wait(1)
+                        task.wait(1)
                         notifications.ChildAdded:Connect(function(child)
                             print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
                         end)
                         fireclickdetector(sellingPoint.ClickDetector)
-                        task.wait(1)
+                        task.wait(1.5)
                         print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
-                        task.wait(1)
+                        task.wait(1.5)
                         serverHop()
                     else --If we haven't reached the maximum capacity then continue stealing
                         tweenService:Create(rootPart, tweenInfo, {CFrame = v.CFrame}):Play()
@@ -145,15 +146,15 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
     end
 
     tweenService:Create(rootPart, tweenInfo, {CFrame = sellingPoint.PrimaryPart.CFrame}):Play() --Regardless of if we've not got the maximum jewels, teleport and sell to stop the player getting stuck
-    task.wait(.5)
-    task.wait(.5)
+    task.wait(1)
+    task.wait(1)
     notifications.ChildAdded:Connect(function(child)
         print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
     end)
     fireclickdetector(sellingPoint.ClickDetector)
-    task.wait(.5)
+    task.wait(1.5)
     print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
-    task.wait(1)
+    task.wait(1.5)
     serverHop()
 
 else --If the store isn't being robbed

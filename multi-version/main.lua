@@ -131,7 +131,8 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                         notifications.ChildAdded:Connect(function(child)
                             print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
                         end)
-                        print(player.Name .. "is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
+                        print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
+                        task.wait(1)
                         serverHop()
                     else --If we haven't reached the maximum capacity then continue stealing
                         tweenService:Create(rootPart, tweenInfo, {CFrame = v.CFrame}):Play()
@@ -148,10 +149,11 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
     task.wait(.5)
     fireclickdetector(sellingPoint.ClickDetector)
     task.wait(.5)
-    local reward = notifications.ChildAdded:Connect(function(child)
+    notifications.ChildAdded:Connect(function(child)
         print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
     end)
-    print(player.Name .. "is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
+    print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
+    task.wait(1)
     serverHop()
 
 else --If the store isn't being robbed

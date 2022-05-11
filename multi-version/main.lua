@@ -11,8 +11,8 @@ local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 local rootPart = character.HumanoidRootPart
 local playerGui = player.PlayerGui
-local cash = player.Data.Stats.Cash
-local notifications = player.Main.notification_container
+local cash = player.Data.Stats.Cash.Value
+local notifications = playerGui.Main.notification_container
 local camera = workspace.Camera
 
 --// Map
@@ -31,7 +31,7 @@ player.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
         queueonteleport([[
             repeat wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.PlayerGui
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/jasonsworks/cr-autofarm/main/main.lua'))()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/jasonsworks/cr-autofarm/master/multi-version/main.lua'))()
         ]])
     end
  end)
@@ -65,7 +65,7 @@ local function joinNew()
 end
 
 --// Script
-print(player .. " Starting farming with " .. cash)
+print(player.Name .. " Starting farming with " .. tostring(cash))
 local server = joinNew()
 local function serverHop()
     if not server then 
@@ -127,13 +127,11 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                         task.wait(.5)
                         task.wait(.5)
                         fireclickdetector(sellingPoint.ClickDetector)
-                        task.wait(.5)
-                        for _,b in next, notifications:GetChildren() do
-                            if b:IsA("TextLabel") and string.match(b.Text, "from jewelry") then
-                                print(player .. " has sold " .. bagAmount .. " bags for " .. b.Text)
-                            end
-                        end
-                        print(player .. "is changing server, new cash value: " .. player.Data.Stats.Cash)
+                        task.wait(1)
+                        notifications.ChildAdded:Connect(function(child)
+                            print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
+                        end)
+                        print(player.Name .. "is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
                         serverHop()
                     else --If we haven't reached the maximum capacity then continue stealing
                         tweenService:Create(rootPart, tweenInfo, {CFrame = v.CFrame}):Play()
@@ -150,12 +148,10 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
     task.wait(.5)
     fireclickdetector(sellingPoint.ClickDetector)
     task.wait(.5)
-    for _,b in next, notifications:GetChildren() do
-        if b:IsA("TextLabel") and string.match(b.Text, "from jewelry") then
-            print(player .. " has sold " .. bagAmount .. " bags for " .. b.Text)
-        end
-    end
-    print(player .. "is changing server, new cash value: " .. player.Data.Stats.Cash)
+    local reward = notifications.ChildAdded:Connect(function(child)
+        print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
+    end)
+    print(player.Name .. "is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
     serverHop()
 
 else --If the store isn't being robbed

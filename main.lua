@@ -63,7 +63,6 @@ local function joinNew()
 end
 
 --// Script
-
 local server = joinNew()
 local function serverHop()
     if not server then 

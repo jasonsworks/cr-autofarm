@@ -77,7 +77,7 @@ local function serverHop()
 end
 
 humanoid.Died:Connect(function() --If the player dies then teleport, this is needed because with noclip being enabled the player can fall under the map and be kicked
-    print(player .. " Was killed! Changing server..")
+    print(player.Name .. " Was killed! Changing server..")
     serverHop()
 end)
 
@@ -131,7 +131,7 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                             print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
                         end)
                         fireclickdetector(sellingPoint.ClickDetector)
-                        task.wait(1.5)
+                        task.wait(3)
                         print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
                         task.wait(1.5)
                         serverHop()

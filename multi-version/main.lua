@@ -132,7 +132,7 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
         if v:IsA("Part") then
             local parentGlass = v.Parent.parent_glass.Value --Find out what glass box is related to the boxes, this is important to see what boxes can be robbed
             for _,k in next, jewelryStore.Rob.glass:GetChildren() do
-                if parentGlass.CanCollide == false and v.Parent.Union.Transparency == 0 then --Has the glass been destroyed?
+                if parentGlass.CanCollide == false and parentGlass.Position ~= Vector3.new(627.768, 2.52863, -188.403) and v.Parent.Union.Transparency == 0 then --Has the glass been destroyed?
                     task.wait(1)
                     bagSplit = string.split(character:WaitForChild("Duffel Bag").Handle.AmountDisplay.container["jewelry_container"].amount.Text, "/") --How much jewels do we have?
                     bagAmount = tonumber(bagSplit[1])
@@ -148,9 +148,6 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                         task.wait(3)
                         print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
                         task.wait(1.5)
-                        serverHop()
-                    elseif parentGlass.Position == Vector3.new(627.768, 2.52863, -188.403) then
-                        print(player.Name .. " stuck on jewelry, changing server..")
                         serverHop()
                     else --If we haven't reached the maximum capacity then continue stealing
                         tweenService:Create(rootPart, tweenInfo, {CFrame = v.CFrame}):Play()

@@ -65,7 +65,6 @@ local function joinNew()
 end
 
 --// Script
-print(player.Name .. " Started farming with " .. tostring(cash))
 local server = joinNew()
 local function serverHop()
     if not server then 
@@ -96,6 +95,7 @@ local function clickButton(path) --Fire button events
 end
 
 if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being robbed, we want this to be happening so no money has to be spent on a gun
+    print(player.Name .. " Started farming with " .. tostring(cash))
     task.wait(2)
     if playerGui:FindFirstChild("Intro") then
         local playButton = playerGui.Intro.container.buttons.play.hitbox
@@ -158,5 +158,6 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
     serverHop()
 
 else --If the store isn't being robbed
+    print(player.Name .. " is changing server, store not being robbed ")
     serverHop()
 end

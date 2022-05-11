@@ -30,7 +30,7 @@ queueonteleport = syn.queue_on_teleport or queue_on_teleport
 player.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
         queueonteleport([[
-            repeat wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.PlayerGui.Main
+            repeat wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.PlayerGui.Main and game.Players.LocalPlayer.PlayerGui.Main
             loadstring(game:HttpGet('https://raw.githubusercontent.com/jasonsworks/cr-autofarm/master/multi-version/main.lua'))()
         ]])
     end
@@ -126,11 +126,11 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
                         tweenService:Create(rootPart, tweenInfo, {CFrame = sellingPoint.PrimaryPart.CFrame}):Play() --If we've reached the maximum bag capacity then we can sell the jewels
                         task.wait(.5)
                         task.wait(.5)
-                        fireclickdetector(sellingPoint.ClickDetector)
-                        task.wait(1)
                         notifications.ChildAdded:Connect(function(child)
                             print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
                         end)
+                        fireclickdetector(sellingPoint.ClickDetector)
+                        task.wait(1)
                         print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
                         task.wait(1)
                         serverHop()
@@ -147,11 +147,11 @@ if alarm.Sound.IsPlaying then --Checks if the jewelry store is currently being r
     tweenService:Create(rootPart, tweenInfo, {CFrame = sellingPoint.PrimaryPart.CFrame}):Play() --Regardless of if we've not got the maximum jewels, teleport and sell to stop the player getting stuck
     task.wait(.5)
     task.wait(.5)
-    fireclickdetector(sellingPoint.ClickDetector)
-    task.wait(.5)
     notifications.ChildAdded:Connect(function(child)
         print(player.Name .. " has sold " .. bagAmount .. " bags for " .. child.Text)
     end)
+    fireclickdetector(sellingPoint.ClickDetector)
+    task.wait(.5)
     print(player.Name .. " is changing server, new cash value: " .. player.Data.Stats.Cash.Value)
     task.wait(1)
     serverHop()
